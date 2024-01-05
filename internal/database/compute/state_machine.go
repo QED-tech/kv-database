@@ -6,7 +6,7 @@ import (
 	"unicode"
 )
 
-var ErrInvalidChar = errors.New("invalid character")
+var ErrInvalidChar = errors.New("[database] invalid character for parse")
 
 type parseState int
 
@@ -38,11 +38,13 @@ func newParseStateMachine() *parseStateMachine {
 func (m *parseStateMachine) parse(query string) ([]string, error) {
 	for _, char := range query {
 		switch {
+		case char == '\n':
+			m.handleEvent(eventEndOfString, ' ')
 		case unicode.IsSpace(char):
 			m.handleEvent(eventSpace, char)
 		case unicode.IsLetter(char) || char == '_':
 			m.handleEvent(eventLetter, char)
-		case char == '"':
+		case char == '"' || char == '\'':
 			m.state = stateWordsString
 		default:
 			return nil, ErrInvalidChar

@@ -1,0 +1,8 @@
+engine:
+  type: "in_memory"
+network:
+  address: "127.0.0.1:8080"
+  max_connections: 20
+logging:
+  level: "info"
+  output: "stdout"
