@@ -8,10 +8,10 @@ import (
 
 var (
 	ErrMinTokensLen = errors.New(
-		fmt.Sprintf("minimum tokens length for execute command - %d", minimumTokensLen),
+		fmt.Sprintf("[database] minimum tokens length for execute command - %d", minimumTokensLen),
 	)
 	ErrMaxTokensLen = errors.New(
-		fmt.Sprintf("maximum tokens length for execute command - %d", maxTokensLen),
+		fmt.Sprintf("[database] maximum tokens length for execute command - %d", maxTokensLen),
 	)
 )
 

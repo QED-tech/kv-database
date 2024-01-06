@@ -50,8 +50,8 @@ func (c Command) GetValue() string {
 }
 
 var (
-	ErrInvalidCommand        = errors.New("invalid command")
-	ErrInvalidArgumentsCount = errors.New("invalid arguments count")
+	ErrInvalidCommand        = errors.New("[database] invalid command")
+	ErrInvalidArgumentsCount = errors.New("[database] invalid arguments count")
 )
 
 func NewCommand(operation Operation, arguments []string) Command {

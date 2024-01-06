@@ -5,11 +5,21 @@ import (
 	"fmt"
 )
 
-type Engine struct {
-	storage IStorage
+type Storage interface {
+	Get(key string) Result
+	Set(key string, value string) Result
+	Delete(key string) Result
 }
 
-func NewEngine(storage IStorage) *Engine {
+type Result struct {
+	Out string
+}
+
+type Engine struct {
+	storage Storage
+}
+
+func NewEngine(storage Storage) *Engine {
 	return &Engine{
 		storage: storage,
 	}

@@ -49,10 +49,14 @@ func (db *Database) Handle(input string) string {
 
 	tokens, err := db.parser.Parse(input)
 	if err != nil {
-		db.logger.Errorf("[database] error parsing query: %v", err)
+		db.logger.Warnf("[database] error parsing query: %v", err)
 
 		return err.Error()
 	}
+
+	db.logger.Infof(
+		"[database] parsed tokens %v", tokens,
+	)
 
 	command, err := db.analyzer.Analyze(tokens)
 	if err != nil {

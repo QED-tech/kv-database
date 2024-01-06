@@ -1,5 +1,2 @@
 .idea
 bin/*
-cmd/*
-internal/server/
-internal/client/

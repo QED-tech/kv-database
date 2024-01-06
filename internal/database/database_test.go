@@ -33,7 +33,7 @@ func TestDatabase_Handle(t *testing.T) {
 			name: "Should succeed execute get operation",
 			args: args{input: "GET key"},
 			prepare: func(f *fields) {
-				f.logger.EXPECT().Infof(gomock.Any(), gomock.Any()).Times(1)
+				f.logger.EXPECT().Infof(gomock.Any(), gomock.Any()).AnyTimes()
 
 				f.parser.EXPECT().
 					Parse("GET key").
