@@ -52,7 +52,7 @@ func TestDatabase_Handle(t *testing.T) {
 					Execute(commands.Command{
 						Operation: "GET",
 						Arguments: []string{"key"},
-					}).Return(storage.Result{Out: "value"}, nil)
+					}, true).Return(storage.Result{Out: "value"}, nil)
 			},
 			want: "value",
 		},

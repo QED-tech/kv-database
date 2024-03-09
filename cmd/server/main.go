@@ -6,6 +6,8 @@ import (
 	"database/internal/network"
 	"database/internal/shared/logger"
 	"log"
+
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -24,6 +26,7 @@ func main() {
 		log.Fatalf("failed to create database, err: %v", err)
 	}
 
+	l.Debug("config: ", zap.Reflect("config", *conf))
 	s := network.NewTCPServer(database, l, conf)
 
 	if err := s.Listen(); err != nil {

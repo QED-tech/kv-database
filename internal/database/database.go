@@ -7,6 +7,8 @@ import (
 	"database/internal/shared/logger"
 )
 
+//go:generate go run go.uber.org/mock/mockgen -package database -destination mock.go -source database.go Engine Analyzer Parser
+
 type Parser interface {
 	Parse(query string) ([]string, error)
 }
@@ -15,9 +17,8 @@ type Analyzer interface {
 	Analyze(compute.Tokens) (commands.Command, error)
 }
 
-//go:generate go run go.uber.org/mock/mockgen -package database -destination mock.go -source database.go Engine Analyzer Parser
 type Engine interface {
-	Execute(command commands.Command) (storage.Result, error)
+	Execute(command commands.Command, writeToWAL bool) (storage.Result, error)
 }
 
 type Database struct {
@@ -42,14 +43,9 @@ func NewDatabase(
 }
 
 func (db *Database) Handle(input string) string {
-	db.logger.Infof(
-		"[database] received input: %s",
-		input,
-	)
-
 	tokens, err := db.parser.Parse(input)
 	if err != nil {
-		db.logger.Warnf("[database] error parsing query: %v", err)
+		db.logger.Infof("[database] error parsing query: %v", err)
 
 		return err.Error()
 	}
@@ -60,12 +56,12 @@ func (db *Database) Handle(input string) string {
 
 	command, err := db.analyzer.Analyze(tokens)
 	if err != nil {
-		db.logger.Warnf("[database] error analyze query: %v", err)
+		db.logger.Infof("[database] error analyze query: %v", err)
 
 		return err.Error()
 	}
 
-	result, err := db.engine.Execute(command)
+	result, err := db.engine.Execute(command, true)
 	if err != nil {
 		db.logger.Errorf("[database] failed to execute query: %v", err)
 

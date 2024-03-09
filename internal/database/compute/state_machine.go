@@ -2,11 +2,10 @@ package compute
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"unicode"
 )
-
-var ErrInvalidChar = errors.New("invalid character for parse")
 
 type parseState int
 
@@ -42,12 +41,14 @@ func (m *parseStateMachine) parse(query string) ([]string, error) {
 			m.handleEvent(eventEndOfString, ' ')
 		case unicode.IsSpace(char):
 			m.handleEvent(eventSpace, char)
-		case unicode.IsLetter(char) || char == '_':
+		case unicode.IsLetter(char) || char == '_' || unicode.IsDigit(char):
 			m.handleEvent(eventLetter, char)
-		case char == '"' || char == '\'':
+		case char == '\'':
 			m.state = stateWordsString
 		default:
-			return nil, ErrInvalidChar
+			return nil, errors.New(
+				fmt.Sprintf("invalid character for parse: %c", char),
+			)
 		}
 	}
 

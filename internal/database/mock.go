@@ -118,16 +118,16 @@ func (m *MockEngine) EXPECT() *MockEngineMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockEngine) Execute(command commands.Command) (storage.Result, error) {
+func (m *MockEngine) Execute(command commands.Command, writeToWAL bool) (storage.Result, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute", command)
+	ret := m.ctrl.Call(m, "Execute", command, writeToWAL)
 	ret0, _ := ret[0].(storage.Result)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockEngineMockRecorder) Execute(command any) *gomock.Call {
+func (mr *MockEngineMockRecorder) Execute(command, writeToWAL any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockEngine)(nil).Execute), command)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockEngine)(nil).Execute), command, writeToWAL)
 }

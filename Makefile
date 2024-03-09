@@ -12,6 +12,9 @@ build:
 server:
 	./bin/server
 
+client:
+	./bin/client
+
 gen:
 	go generate ./...
 

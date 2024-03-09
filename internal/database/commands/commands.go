@@ -1,6 +1,10 @@
 package commands
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"strings"
+)
 
 type Operation string
 
@@ -9,6 +13,10 @@ const (
 	GetOperation    Operation = "GET"
 	SetOperation    Operation = "SET"
 )
+
+func (o Operation) String() string {
+	return string(o)
+}
 
 func (o Operation) IsValid() bool {
 	switch o {
@@ -35,6 +43,10 @@ func (o Operation) GetArgumentsCount() int {
 type Command struct {
 	Operation Operation
 	Arguments []string
+}
+
+func (c Command) String() string {
+	return fmt.Sprintf("%s %s", c.Operation, strings.Join(c.Arguments, " "))
 }
 
 func (c Command) GetKey() string {

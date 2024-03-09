@@ -1,0 +1,3 @@
+SET key value
+DEL key
+SET key1 val

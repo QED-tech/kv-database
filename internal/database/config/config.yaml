@@ -4,5 +4,10 @@ network:
   address: "127.0.0.1:8080"
   max_connections: 20
 logging:
-  level: "info"
+  level: "dev"
   output: "stdout"
+wal:
+  flushing_batch_size: 20
+  flushing_batch_timeout_ms: 3000
+  max_segment_size: "10MB"
+  data_directory: "/tmp/kv-database/wal"

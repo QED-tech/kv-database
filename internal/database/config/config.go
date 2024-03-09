@@ -7,11 +7,19 @@ import (
 )
 
 const (
-	defaultEngineType     = "in_memory"
-	defaultAddress        = "127.0.0.1:8080"
-	defaultMaxConnections = 30
-	defaultLogLevel       = "production"
-	defaultLogOutput      = "stdout"
+	DefaultEngineType = "in_memory"
+
+	DefaultAddress        = "127.0.0.1:8080"
+	DefaultMaxConnections = 30
+
+	DefaultLogLevel  = "production"
+	LogLevelDev      = "dev"
+	DefaultLogOutput = "stdout"
+
+	DefaultWalFlushingBatchSize      = 100
+	DefaultWalFlushingBatchTimeoutMS = 1000
+	DefaultWalMaxSegmentSize         = "10MB"
+	DefaultWalDataDirectory          = "/tmp/kv-database/wal"
 )
 
 type EngineConfig struct {
@@ -28,10 +36,18 @@ type LoggingConfig struct {
 	Output string `yaml:"output"`
 }
 
+type WalConfig struct {
+	FlushingBatchSize      int    `yaml:"flushing_batch_size"`
+	FlushingBatchTimeoutMS int    `yaml:"flushing_batch_timeout_ms"`
+	MaxSegmentSize         string `yaml:"max_segment_size"`
+	DataDirectory          string `yaml:"data_directory"`
+}
+
 type Config struct {
 	Engine  EngineConfig  `yaml:"engine"`
 	Network NetworkConfig `yaml:"network"`
 	Logging LoggingConfig `yaml:"logging"`
+	Wal     WalConfig     `yaml:"wal"`
 }
 
 func ReadConfig() (*Config, error) {
@@ -53,15 +69,21 @@ func ReadConfig() (*Config, error) {
 func defaultConfig() Config {
 	return Config{
 		Engine: EngineConfig{
-			Type: defaultEngineType,
+			Type: DefaultEngineType,
 		},
 		Network: NetworkConfig{
-			MaxConnections: defaultMaxConnections,
-			Address:        defaultAddress,
+			MaxConnections: DefaultMaxConnections,
+			Address:        DefaultAddress,
 		},
 		Logging: LoggingConfig{
-			Level:  defaultLogLevel,
-			Output: defaultLogOutput,
+			Level:  DefaultLogLevel,
+			Output: DefaultLogOutput,
+		},
+		Wal: WalConfig{
+			FlushingBatchSize:      DefaultWalFlushingBatchSize,
+			FlushingBatchTimeoutMS: DefaultWalFlushingBatchTimeoutMS,
+			MaxSegmentSize:         DefaultWalMaxSegmentSize,
+			DataDirectory:          DefaultWalDataDirectory,
 		},
 	}
 }

@@ -21,14 +21,6 @@ func TestParser_Parse(t *testing.T) {
 		{
 			name: "Should return tokens with multiple words query",
 			args: args{
-				query: `SET query "hello world value"`,
-			},
-			want:    []string{"SET", "query", "hello world value"},
-			wantErr: false,
-		},
-		{
-			name: "Should return tokens with multiple words query",
-			args: args{
 				query: `GET 'multiple words key'`,
 			},
 			want:    []string{"GET", "multiple words key"},
